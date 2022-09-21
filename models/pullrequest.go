@@ -1,6 +1,6 @@
 package models
 
-type Author struct {
+type Actor struct {
 	DisplayName string `json:"display_name,omitempty"`
 	Type        string `json:"type,omitempty"`
 	NickName    string `json:"nick_name,omitempty"`
@@ -12,7 +12,7 @@ type Pullrequest struct {
 }
 
 type PullrequestResponse struct {
-	Author      Author      `json:"author,omitempty"`
+	Actor       Actor       `json:"actor,omitempty"`
 	Pullrequest Pullrequest `json:"pullrequest,omitempty"`
 }
 
@@ -21,5 +21,5 @@ func (p PullrequestResponse) PullRequestFormat() string {
 		p.Pullrequest.Title + "\n" +
 		"📝​Description: " +
 		p.Pullrequest.Description + "\n" +
-		"👀​Author: " + p.Author.DisplayName
+		"👀​Author: " + p.Actor.DisplayName
 }
