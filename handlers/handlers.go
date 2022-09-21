@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/tapiaw38/ecommerzeta-bot/models"
@@ -12,17 +11,17 @@ import (
 func CreateWebHook(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var data interface{}
+		var pullrequest *models.PullrequestResponse
 
-		err := json.NewDecoder(r.Body).Decode(&data)
+		err := json.NewDecoder(r.Body).Decode(&pullrequest)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 
-		log.Println(data)
-
-		response := NewResponse(Message, "ok", "ok")
+		message := pullrequest.PullRequestFormat()
+		s.Slack().SendPostMessage(message)
+		response := NewResponse(Message, "ok", pullrequest)
 		ResponseWithJson(w, response, http.StatusOK)
 	}
 }
@@ -30,7 +29,7 @@ func CreateWebHook(s server.Server) http.HandlerFunc {
 func CreatePullRequest(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var pullrequest *models.PullRequest
+		var pullrequest *models.PullrequestResponse
 		err := json.NewDecoder(r.Body).Decode(&pullrequest)
 
 		if err != nil {
