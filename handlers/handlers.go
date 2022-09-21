@@ -11,7 +11,17 @@ import (
 
 func CreateWebHook(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("on create web hook")
+
+		var data interface{}
+
+		err := json.NewDecoder(r.Body).Decode(&data)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+
+		log.Println(data)
+
 		response := NewResponse(Message, "ok", "ok")
 		ResponseWithJson(w, response, http.StatusOK)
 	}
