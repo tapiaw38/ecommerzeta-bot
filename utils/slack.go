@@ -27,11 +27,11 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 
 	attachment := slack.Attachment{
 		Color:      "#36a64f",
-		Pretext:    ":gorro_de_fiesta: `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
+		Pretext:    "🎉 `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
 		AuthorName: pullrequest.Actor.DisplayName,
-		AuthorIcon: pullrequest.Actor.Avatar["href"],
+		AuthorIcon: pullrequest.Actor.Links.Avatar.Href,
 		Title:      pullrequest.Pullrequest.Title,
-		TitleLink:  pullrequest.Links.Html["href"],
+		TitleLink:  pullrequest.Links.Html.Href,
 		Text:       pullrequest.Pullrequest.Description,
 	}
 

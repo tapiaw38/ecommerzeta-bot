@@ -1,14 +1,23 @@
 package models
 
-type Actor struct {
-	DisplayName string            `json:"display_name,omitempty"`
-	Type        string            `json:"type,omitempty"`
-	NickName    string            `json:"nick_name,omitempty"`
-	Avatar      map[string]string `json:"avatar,omitempty"`
+type Avatar struct {
+	Href string `json:"href,omitempty"`
+}
+
+type Html struct {
+	Href string `json:"href,omitempty"`
 }
 
 type Links struct {
-	Html map[string]string
+	Avatar Avatar `json:"avatar,omitempty"`
+	Html   Html   `json:"html,omitempty"`
+}
+
+type Actor struct {
+	DisplayName string `json:"display_name,omitempty"`
+	Type        string `json:"type,omitempty"`
+	NickName    string `json:"nick_name,omitempty"`
+	Links       Links  `json:"links,omitempty"`
 }
 
 type Pullrequest struct {
