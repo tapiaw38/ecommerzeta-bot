@@ -52,7 +52,7 @@ func shouldCheckUser(displayName string) bool {
 func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 
 	if !shouldCheckUser(pullrequest.Actor.DisplayName) {
-		log.Printf("The user is not in the ecommerce list, name: %s, id: %s", pullrequest.Actor.NickName, pullrequest.Actor.AccountId)
+		log.Printf("The user is not in the ecommerce list, name: %s, id: %s, repo: %s", pullrequest.Actor.DisplayName, pullrequest.Actor.AccountId, pullrequest.Repository.Name)
 		return
 	}
 
@@ -64,7 +64,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	case "Bigbox_Frontend":
 		channel = s.slackChannelFront
 	default:
-		channel = "general"
+		channel = "la-ecommerzeta"
 	}
 
 	attachment := slack.Attachment{
@@ -86,5 +86,5 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 		log.Printf("%s\n", err)
 	}
 
-	log.Printf("Pullrequest, name %s, id %s", pullrequest.Actor.NickName, pullrequest.Actor.AccountId)
+	log.Printf("Pullrequest, name %s, id %s", pullrequest.Actor.DisplayName, pullrequest.Actor.AccountId)
 }
