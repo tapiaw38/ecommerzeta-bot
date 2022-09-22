@@ -16,9 +16,10 @@ type Server interface {
 }
 
 type Config struct {
-	Port         string
-	SlackToken   string
-	SlackChannel string
+	Port              string
+	SlackToken        string
+	SlackChannelFront string
+	SlackChannelBack  string
 }
 
 type Broker struct {
@@ -43,7 +44,7 @@ func NewServer(ctx context.Context, config *Config) (*Broker, error) {
 	broker := &Broker{
 		config: config,
 		router: mux.NewRouter(),
-		slack:  utils.NewSlack(config.SlackToken, config.SlackChannel),
+		slack:  utils.NewSlack(config.SlackToken, config.SlackChannelFront, config.SlackChannelBack),
 	}
 
 	return broker, nil

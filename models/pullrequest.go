@@ -1,5 +1,10 @@
 package models
 
+type Repository struct {
+	FullName string `json:"full_name,omitempty"`
+	Name     string `json:"name,omitempty"`
+}
+
 type Avatar struct {
 	Href string `json:"href,omitempty"`
 }
@@ -17,6 +22,7 @@ type Actor struct {
 	DisplayName string `json:"display_name,omitempty"`
 	Type        string `json:"type,omitempty"`
 	NickName    string `json:"nick_name,omitempty"`
+	AccountId   string `json:"account_id,omitempty"`
 	Links       Links  `json:"links,omitempty"`
 }
 
@@ -27,6 +33,7 @@ type Pullrequest struct {
 }
 
 type PullrequestResponse struct {
+	Repository  Repository  `json:"repository,omitempty"`
 	Actor       Actor       `json:"actor,omitempty"`
 	Pullrequest Pullrequest `json:"pullrequest,omitempty"`
 }

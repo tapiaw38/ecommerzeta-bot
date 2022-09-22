@@ -18,7 +18,6 @@ func CreateWebHook(s server.Server) http.HandlerFunc {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
-
 		s.Slack().SendPostMessage(pullrequest)
 		response := NewResponse(Message, "ok", pullrequest)
 		ResponseWithJson(w, response, http.StatusOK)

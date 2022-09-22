@@ -19,12 +19,14 @@ func main() {
 
 	PORT := os.Getenv("PORT")
 	SLACK_TOKEN := os.Getenv("SLACK_TOKEN")
-	SLACK_CHANNEL := os.Getenv("SLACK_CHANNEL")
+	SLACK_CHANNEL_FRONT := os.Getenv("SLACK_CHANNEL_FRONT")
+	SLACK_CHANNEL_BACK := os.Getenv("SLACK_CHANNEL_BACK")
 
 	s, err := server.NewServer(context.Background(), &server.Config{
-		Port:         PORT,
-		SlackToken:   SLACK_TOKEN,
-		SlackChannel: SLACK_CHANNEL,
+		Port:              PORT,
+		SlackToken:        SLACK_TOKEN,
+		SlackChannelFront: SLACK_CHANNEL_FRONT,
+		SlackChannelBack:  SLACK_CHANNEL_BACK,
 	})
 
 	if err != nil {

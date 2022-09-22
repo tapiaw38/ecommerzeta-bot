@@ -2,20 +2,37 @@ package utils
 
 import (
 	"log"
+	"strings"
 
 	"github.com/slack-go/slack"
 	"github.com/tapiaw38/ecommerzeta-bot/models"
 )
 
+var (
+	SEND_NEDDED = []string{
+		"Walter Tapia",
+		"Federico Poncela",
+		"Julian Liendo",
+		"Daniel Leonardo Villajuan",
+		"Julián Gregori Battista",
+		"Elias Velardez",
+		"Anibal Reinoso",
+		"Ignacio Pieve Roiger",
+		"ildemaro.carrasco",
+	}
+)
+
 type SlackConfig struct {
-	slackToken   string
-	slackChannel string
+	slackToken        string
+	slackChannelFront string
+	slackChannelBack  string
 }
 
-func NewSlack(slackToken string, slackChannel string) *SlackConfig {
+func NewSlack(slackToken string, slackChannelFront string, slackChannelBack string) *SlackConfig {
 	return &SlackConfig{
-		slackToken:   slackToken,
-		slackChannel: slackChannel,
+		slackToken:        slackToken,
+		slackChannelFront: slackChannelFront,
+		slackChannelBack:  slackChannelBack,
 	}
 }
 
@@ -23,7 +40,32 @@ func (s SlackConfig) SlackClient() *slack.Client {
 	return slack.New(s.slackToken)
 }
 
+func shouldCheckUser(displayName string) bool {
+	for _, u := range SEND_NEDDED {
+		if strings.Contains(displayName, u) {
+			return true
+		}
+	}
+	return false
+}
+
 func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
+
+	if !shouldCheckUser(pullrequest.Actor.DisplayName) {
+		log.Printf("The user is not in the ecommerce list, name: %s, id: %s", pullrequest.Actor.NickName, pullrequest.Actor.AccountId)
+		return
+	}
+
+	var channel string
+
+	switch pullrequest.Repository.Name {
+	case "bigbox":
+		channel = s.slackChannelBack
+	case "Bigbox_Frontend":
+		channel = s.slackChannelFront
+	default:
+		channel = "general"
+	}
 
 	attachment := slack.Attachment{
 		Color:      "#36a64f",
@@ -36,7 +78,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	}
 
 	_, _, err := s.SlackClient().PostMessage(
-		s.slackChannel,
+		channel,
 		slack.MsgOptionAttachments(attachment),
 	)
 
@@ -44,5 +86,5 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 		log.Printf("%s\n", err)
 	}
 
-	log.Println("Message successfully")
+	log.Printf("Pullrequest, name %s, id %s", pullrequest.Actor.NickName, pullrequest.Actor.AccountId)
 }

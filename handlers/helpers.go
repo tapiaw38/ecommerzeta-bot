@@ -10,14 +10,12 @@ const (
 	Message = "message"
 )
 
-// Response is a response struct
 type Response struct {
 	MessageType string      `json:"message_type"`
 	Message     string      `json:"message"`
 	Response    interface{} `json:"response"`
 }
 
-// NewResponse is a helper function to create a new response
 func NewResponse(messageType string, message string, response interface{}) Response {
 	return Response{
 		MessageType: messageType,
@@ -26,7 +24,6 @@ func NewResponse(messageType string, message string, response interface{}) Respo
 	}
 }
 
-// ResponseWithJSON is a helper function to send a response with json
 func ResponseWithJson(w http.ResponseWriter, response Response, statusCode int) {
 
 	w.Header().Set("Content-Type", "application/json")
