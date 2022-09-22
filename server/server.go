@@ -37,9 +37,6 @@ func (b *Broker) Slack() *utils.SlackConfig {
 }
 
 func NewServer(ctx context.Context, config *Config) (*Broker, error) {
-	if config.Port == "" {
-		config.Port = "8000"
-	}
 
 	broker := &Broker{
 		config: config,
