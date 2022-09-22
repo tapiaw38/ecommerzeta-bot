@@ -8,6 +8,5 @@ import (
 )
 
 func BinderRoutes(s server.Server, r *mux.Router) {
-	r.HandleFunc("/pullrequest", CreatePullRequest(s)).Methods(http.MethodPost)
 	r.HandleFunc("/webhook", CreateWebHook(s)).Methods(http.MethodPost)
 }
