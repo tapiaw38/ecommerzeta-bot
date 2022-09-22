@@ -23,10 +23,10 @@ type Actor struct {
 type Pullrequest struct {
 	Title       string `json:"title,omitempty"`
 	Description string `json:"description,omitempty"`
+	Links       Links  `json:"links,omitempty"`
 }
 
 type PullrequestResponse struct {
 	Actor       Actor       `json:"actor,omitempty"`
 	Pullrequest Pullrequest `json:"pullrequest,omitempty"`
-	Links       Links       `json:"links,omitempty"`
 }

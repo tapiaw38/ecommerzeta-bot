@@ -31,7 +31,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 		AuthorName: pullrequest.Actor.DisplayName,
 		AuthorIcon: pullrequest.Actor.Links.Avatar.Href,
 		Title:      pullrequest.Pullrequest.Title,
-		TitleLink:  pullrequest.Links.Html.Href,
+		TitleLink:  pullrequest.Pullrequest.Links.Html.Href,
 		Text:       pullrequest.Pullrequest.Description,
 	}
 
