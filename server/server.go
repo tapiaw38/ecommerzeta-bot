@@ -48,7 +48,7 @@ func NewServer(ctx context.Context, config *Config) (*Broker, error) {
 			config.SlackChannelFront,
 			config.SlackChannelBack,
 			config.SlackWebhookFront,
-			config.SlackChannelBack,
+			config.SlackWebhookBack,
 		),
 	}
 

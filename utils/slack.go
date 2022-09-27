@@ -56,12 +56,10 @@ func shouldCheckUser(displayName string) bool {
 
 func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 
-	/*
-		if !shouldCheckUser(pullrequest.Actor.DisplayName) {
-			log.Printf("The user is not in the ecommerce list, name: %s, id: %s, repo: %s", pullrequest.Actor.DisplayName, pullrequest.Actor.AccountId, pullrequest.Repository.Name)
-			return
-		}
-	*/
+	if !shouldCheckUser(pullrequest.Actor.DisplayName) {
+		log.Printf("The user is not in the ecommerce list, name: %s, id: %s, repo: %s", pullrequest.Actor.DisplayName, pullrequest.Actor.AccountId, pullrequest.Repository.Name)
+		return
+	}
 
 	var channel string
 	var webhook string
@@ -74,7 +72,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 		channel = s.slackChannelFront
 		webhook = s.slackWebhookFront
 	default:
-		channel = "la-ecommerzeta"
+		channel = "#la-ecommerzeta"
 	}
 
 	attachment := slack.Attachment{}
