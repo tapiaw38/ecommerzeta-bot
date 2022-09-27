@@ -4,7 +4,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/slack-go/slack"
+	"github.com/ashwanthkumar/slack-go-webhook"
 	"github.com/tapiaw38/ecommerzeta-bot/models"
 )
 
@@ -26,18 +26,24 @@ type SlackConfig struct {
 	slackToken        string
 	slackChannelFront string
 	slackChannelBack  string
+	slackWebhookFront string
+	slackWebhookBack  string
 }
 
-func NewSlack(slackToken string, slackChannelFront string, slackChannelBack string) *SlackConfig {
+func NewSlack(
+	slackToken string,
+	slackChannelFront string,
+	slackChannelBack string,
+	slackWebhookFront string,
+	slackWebhookBack string,
+) *SlackConfig {
 	return &SlackConfig{
 		slackToken:        slackToken,
 		slackChannelFront: slackChannelFront,
 		slackChannelBack:  slackChannelBack,
+		slackWebhookFront: slackWebhookFront,
+		slackWebhookBack:  slackWebhookBack,
 	}
-}
-
-func (s SlackConfig) SlackClient() *slack.Client {
-	return slack.New(s.slackToken)
 }
 
 func shouldCheckUser(displayName string) bool {
@@ -57,36 +63,50 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	}
 
 	var channel string
-
-	log.Println(pullrequest)
+	var webhook string
 
 	switch pullrequest.Repository.Name {
 	case "bigbox":
 		channel = s.slackChannelBack
+		webhook = s.slackWebhookFront
 	case "Bigbox-Frontend":
 		channel = s.slackChannelFront
+		webhook = s.slackWebhookBack
 	default:
 		channel = "la-ecommerzeta"
 	}
 
-	attachment := slack.Attachment{
-		Color:      "#36a64f",
-		Pretext:    "🎉 `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
-		AuthorName: pullrequest.Actor.DisplayName,
-		AuthorIcon: pullrequest.Actor.Links.Avatar.Href,
-		Title:      pullrequest.Pullrequest.Title,
-		TitleLink:  pullrequest.Pullrequest.Links.Html.Href,
-		Text:       pullrequest.Pullrequest.Description,
+	/*
+		attachment := slack.Attachment{
+			Color:      "#36a64f",
+			Pretext:    "🎉 `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
+			AuthorName: pullrequest.Actor.DisplayName,
+			AuthorIcon: pullrequest.Actor.Links.Avatar.Href,
+			Title:      pullrequest.Pullrequest.Title,
+			TitleLink:  pullrequest.Pullrequest.Links.Html.Href,
+			Text:       pullrequest.Pullrequest.Description,
+		}
+	*/
+
+	attachment := slack.Attachment{}
+
+	attachment.AuthorIcon = &pullrequest.Actor.Links.Avatar.Href
+	attachment.AuthorName = &pullrequest.Actor.DisplayName
+	attachment.Title = &pullrequest.Pullrequest.Title
+	attachment.TitleLink = &pullrequest.Pullrequest.Links.Html.Href
+	attachment.Text = &pullrequest.Pullrequest.Description
+
+	payload := slack.Payload{
+		Text:        "Hello, `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
+		Username:    "Ecommerzeta",
+		Channel:     channel,
+		IconEmoji:   ":gorro_de_fiesta:",
+		Attachments: []slack.Attachment{attachment},
 	}
 
-	_, _, err := s.SlackClient().PostMessage(
-		channel,
-		slack.MsgOptionAttachments(attachment),
-	)
-
-	if err != nil {
-		log.Printf("%s\n", err)
+	err := slack.Send(webhook, "", payload)
+	if len(err) > 0 {
+		log.Printf("error: %s\n", err)
 	}
-
 	log.Printf("Pullrequest, name %s, id %s", pullrequest.Actor.DisplayName, pullrequest.Actor.AccountId)
 }
