@@ -84,7 +84,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	attachment.Text = &pullrequest.Pullrequest.Description
 
 	payload := slack.Payload{
-		Text:        "🎉​`" + pullrequest.Actor.DisplayName + "` has created a new pull request",
+		Text:        "🎉​ `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
 		Username:    "Ecommerzeta",
 		Channel:     channel,
 		IconEmoji:   ":gorro_de_fiesta:",
