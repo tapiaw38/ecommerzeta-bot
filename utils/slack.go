@@ -63,7 +63,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	switch pullrequest.Repository.Name {
 	case "bigbox":
 		channel = s.slackChannelBack
-	case "Bigbox_Frontend":
+	case "Bigbox-Frontend":
 		channel = s.slackChannelFront
 	default:
 		channel = "la-ecommerzeta"
