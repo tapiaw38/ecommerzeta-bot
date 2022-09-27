@@ -16,7 +16,6 @@ var (
 		"Daniel Leonardo Villajuan",
 		"Julián Gregori Battista",
 		"Elias Velardez",
-		"Anibal Reinoso",
 		"Ignacio Pieve Roiger",
 		"ildemaro.carrasco",
 	}
@@ -70,10 +69,10 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	switch pullrequest.Repository.Name {
 	case "bigbox":
 		channel = s.slackChannelBack
-		webhook = s.slackWebhookFront
+		webhook = s.slackWebhookBack
 	case "Bigbox-Frontend":
 		channel = s.slackChannelFront
-		webhook = s.slackWebhookBack
+		webhook = s.slackWebhookFront
 	default:
 		channel = "la-ecommerzeta"
 	}
@@ -87,7 +86,7 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	attachment.Text = &pullrequest.Pullrequest.Description
 
 	payload := slack.Payload{
-		Text:        "Hello, `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
+		Text:        "`" + pullrequest.Actor.DisplayName + "` has created a new pull request",
 		Username:    "Ecommerzeta",
 		Channel:     channel,
 		IconEmoji:   ":gorro_de_fiesta:",
