@@ -58,6 +58,8 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 
 	var channel string
 
+	log.Println(pullrequest)
+
 	switch pullrequest.Repository.Name {
 	case "bigbox":
 		channel = s.slackChannelBack
