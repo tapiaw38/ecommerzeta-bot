@@ -12,7 +12,6 @@ func CreateWebHook(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		var pullrequest *models.PullrequestResponse
-
 		err := json.NewDecoder(r.Body).Decode(&pullrequest)
 
 		if err != nil {
