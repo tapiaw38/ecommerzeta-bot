@@ -26,10 +26,17 @@ type Actor struct {
 	Links       Links  `json:"links,omitempty"`
 }
 
-type Pullrequest struct {
-	Title       string `json:"title,omitempty"`
-	Description string `json:"description,omitempty"`
+type Reviewer struct {
+	DisplayName string `json:"display_name,omitempty"`
 	Links       Links  `json:"links,omitempty"`
+	AccountId   string `json:"account_id,omitempty"`
+}
+
+type Pullrequest struct {
+	Title       string     `json:"title,omitempty"`
+	Description string     `json:"description,omitempty"`
+	Links       Links      `json:"links,omitempty"`
+	Reviewers   []Reviewer `json:"reviewers,omitempty"`
 }
 
 type PullrequestResponse struct {

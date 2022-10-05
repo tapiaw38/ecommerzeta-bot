@@ -76,12 +76,16 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	}
 
 	attachment := slack.Attachment{}
-
 	attachment.AuthorIcon = &pullrequest.Actor.Links.Avatar.Href
 	attachment.AuthorName = &pullrequest.Actor.DisplayName
 	attachment.Title = &pullrequest.Pullrequest.Title
 	attachment.TitleLink = &pullrequest.Pullrequest.Links.Html.Href
 	attachment.Text = &pullrequest.Pullrequest.Description
+
+	for _, r := range pullrequest.Pullrequest.Reviewers {
+		reviewer := "@" + r.DisplayName
+		attachment.AddField(slack.Field{Title: "Reviewer", Value: reviewer})
+	}
 
 	payload := slack.Payload{
 		Text:        "🎉​ `" + pullrequest.Actor.DisplayName + "` has created a new pull request",
