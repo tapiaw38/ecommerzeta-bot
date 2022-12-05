@@ -9,7 +9,7 @@ require (
 	github.com/parnurzeal/gorequest v0.2.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/cors v1.8.2
-	github.com/slack-go/slack v0.11.3
+	github.com/slack-go/slack v0.11.3 // indirect
 	golang.org/x/net v0.0.0-20220927171203-f486391704dc // indirect
 	moul.io/http2curl v1.0.0 // indirect
 )
