@@ -84,9 +84,13 @@ func (s SlackConfig) SendPostMessage(pullrequest *models.PullrequestResponse) {
 	attachment.Text = &pullrequest.Pullrequest.Description
 	attachment.AddField(slack.Field{Title: "Reviewers"})
 
-	for _, r := range pullrequest.Pullrequest.Reviewers {
-		reviewer := "@" + r.DisplayName
-		attachment.AddField(slack.Field{Value: reviewer})
+	if len(pullrequest.Pullrequest.Reviewers) > 0 {
+		for _, r := range pullrequest.Pullrequest.Reviewers {
+			reviewer := "@" + r.DisplayName
+			attachment.AddField(slack.Field{Value: reviewer})
+		}
+	} else {
+		attachment.AddField(slack.Field{Value: "No reviewers"})
 	}
 
 	payload := slack.Payload{
