@@ -18,6 +18,7 @@ var (
 		"Elias Velardez",
 		"Ignacio Pieve Roiger",
 		"ildemaro.carrasco",
+		"William Buezas Madsen",
 	}
 )
 
